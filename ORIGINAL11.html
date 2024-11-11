@@ -1,0 +1,1774 @@
+<html><head><base href="/">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelasi2.0 - Plateforme Éducative</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #ff8c00;
+            --accent-color: #e74c3c;
+        }
+ 
+        .modal-xl {
+            max-width: 95% !important;
+            margin: 1.75rem auto;
+        }
+
+        .modal-lg {
+            max-width: 500px !important;
+            margin: 1.75rem auto;
+        }
+
+        @media (max-width: 768px) {
+            .modal-dialog {
+                max-width: 95% !important;
+                margin: 1.75rem auto;
+            }
+            
+            .modal-body {
+                padding: 1.5rem;
+                font-size: 1.1rem;
+            }
+            
+            .accordion-body {
+                padding: 1.25rem;
+            }
+            
+            .table td, .table th {
+                padding: 1rem 0.75rem;
+            }
+            
+            .modal .btn {
+                padding: 0.75rem 1.25rem;
+                font-size: 1.1rem;
+            }
+        }
+
+        .protected-link::after {
+            content: '\f023';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            margin-left: 5px;
+            font-size: 0.8em;
+        }
+
+        .protected-link:hover::after {
+            color: var(--accent-color);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 0.8rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-item {
+            position: relative;
+            margin: 0 5px;
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .nav-link:hover {
+            color: white !important;
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        .dropdown-menu {
+            background-color: var(--primary-color);
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 0.5rem;
+            min-width: 200px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            color: rgba(255,255,255,0.9) !important;
+            padding: 0.7rem 1rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--secondary-color);
+            transform: translateX(5px);
+        }
+
+        .btn-outline-light {
+            border-width: 2px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-light:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-danger {
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: var(--primary-color);
+                padding: 1rem;
+                border-radius: 8px;
+                margin-top: 1rem;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+            
+            .nav-item {
+                margin: 5px 0;
+            }
+            
+            .dropdown-menu {
+                background: rgba(0,0,0,0.1);
+                border-radius: 4px;
+                margin: 5px 0;
+            }
+        }
+
+        .hero-section {
+            position: relative;
+            overflow: hidden;
+            background: none;
+            height: 500px;
+            color: white;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-slideshow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .hero-slideshow .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-slideshow .slide.active {
+            opacity: 1;
+            animation: zoomEffect 20s ease-in-out infinite;
+        }
+
+        @keyframes zoomEffect {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .slide-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+        }
+
+        .auth-form {
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        .course-card {
+            border: none;
+            transition: transform 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .support-form {
+            background-color: #f8f9fa;
+            padding: 2rem 0;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .support-form h5 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .text-primary {
+            color: #ff8c00 !important;
+        }
+
+        .loading {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .grayscale {
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+
+        .hover-color:hover {
+            filter: grayscale(0%);
+        }
+
+        .card {
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* AI Chat Styles */
+        .ai-chat-widget {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            display: none;
+        }
+
+        .chat-header {
+            padding: 15px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .message.user {
+            background: #e3f2fd;
+            margin-left: auto;
+        }
+
+        .message.bot {
+            background: #f5f5f5;
+        }
+
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .chat-input button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .chat-toggle-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .minimize-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/"><i class="fas fa-graduation-cap"></i> Kelasi2.0</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Accueil</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/presentation">Présentation de la plateforme</a></li>
+                        <li><a class="dropdown-item" href="/actualites" id="actualites-link">Actualités récentes</a></li>
+                        <li><a class="dropdown-item" href="/acces-rapide">Accès rapide</a></li>
+                        <script>
+                            document.querySelector('a[href="/acces-rapide"]').addEventListener('click', function(e) {
+                                e.preventDefault();
+                                const accesFastModal = new bootstrap.Modal(document.getElementById('accesFastModal'));
+                                accesFastModal.show();
+                            });
+                        </script>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle protected-link" href="#" role="button" data-bs-toggle="dropdown">Cours</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/cours/troisieme">3ème</a></li>
+                        <li><a class="dropdown-item" href="/cours/seconde/serie-a">Seconde</a></li>
+                        <li><a class="dropdown-item" href="/cours/premiere/serie-a">Première A</a></li>
+                        <li><a class="dropdown-item" href="/cours/terminale/serie-a">Terminale A</a></li>
+                        <li><a class="dropdown-item" href="/cours/seconde/serie-c">Seconde</a></li>
+                        <li><a class="dropdown-item" href="/cours/premiere/serie-c">Première C</a></li>
+                        <li><a class="dropdown-item" href="/cours/terminale/serie-c">Terminale C</a></li>
+                        <li><a class="dropdown-item" href="/cours/seconde/serie-d">Seconde</a></li>
+                        <li><a class="dropdown-item" href="/cours/premiere/serie-d">Première D</a></li>
+                        <li><a class="dropdown-item" href="/cours/terminale/serie-d">Terminale D</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle protected-link" href="#" role="button" data-bs-toggle="dropdown">Vidéos</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/videos/tutoriels">Tutoriels par matière</a></li>
+                        <li><a class="dropdown-item" href="/videos/webinaires">Webinaires à venir</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle protected-link" href="#" role="button" data-bs-toggle="dropdown">Quiz</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/quiz/tests">Tests interactifs</a></li>
+                        <li><a class="dropdown-item" href="/quiz/resultats">Résultats et retours</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link protected-link" href="/suivi">Suivi</a></li>
+                <li class="nav-item"><a class="nav-link protected-link" href="/ressources">Ressources</a></li>
+                <li class="nav-item"><a class="nav-link" href="/apres-bac">Après mon BAC</a></li>
+            </ul>
+            <div class="d-flex">
+                <button class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    Connexion
+                </button>
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#registerModal">
+                    Inscription
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="hero-slideshow">
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1517486808906-6ca8b3f04846')">
+            <div class="slide-overlay"></div>
+        </div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1')">
+            <div class="slide-overlay"></div>
+        </div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1531545514256-b1400bc00f31')">
+            <div class="slide-overlay"></div>
+        </div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f')">
+            <div class="slide-overlay"></div>
+        </div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1513258496099-48168024aec0')">
+            <div class="slide-overlay"></div>
+        </div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1509062522246-3755977927d7')">
+            <div class="slide-overlay"></div>
+        </div>
+    </div>
+    <div class="container">
+        <h1 class="display-4 mb-4"><strong>Bienvenue sur Kelasi2.0</strong></h1>
+        <p class="lead">Votre plateforme d'apprentissage en ligne pour réussir vos études</p>
+        <button class="btn btn-danger btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#registerModal">
+            Commencer maintenant
+        </button>
+    </div>
+</div>
+
+<!-- AI Chat Interface -->
+<div class="ai-chat-widget" id="aiChatWidget">
+    <div class="chat-header">
+        <i class="fas fa-robot"></i> Assistant Kelasi
+        <button class="minimize-btn" onclick="toggleChat()">
+            <i class="fas fa-minus"></i>
+        </button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+        <div class="message bot">
+            Bonjour! Je suis l'assistant Kelasi. Comment puis-je vous aider aujourd'hui?
+        </div>
+    </div>
+    <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Tapez votre message...">
+        <button onclick="sendMessage()">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
+</div>
+
+<button class="chat-toggle-btn" id="chatToggleBtn">
+    <i class="fas fa-comments"></i>
+</button>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Connexion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label class="form-label">Email ou Numéro de téléphone</label>
+                        <input type="text" class="form-control" id="loginIdentifier" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mot de passe</label>
+                        <input type="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Presentation Modal -->
+<div class="modal fade" id="presentationModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h4 class="modal-title"><i class="fas fa-graduation-cap me-2"></i>Présentation Détaillée de Kelasi2.0</h4>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="container-fluid">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h3 class="text-primary mb-3">Bienvenue sur Kelasi2.0 - Votre Partenaire Éducatif</h3>
+                            <p class="lead">Une plateforme éducative révolutionnaire conçue spécifiquement pour les élèves congolais du secondaire.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header bg-info text-white">
+                                    <h5><i class="fas fa-tools me-2"></i>Nos Services Clés</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <i class="fas fa-book text-primary me-3"></i>
+                                            Cours en ligne interactifs pour toutes les séries
+                                        </li>
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <i class="fas fa-video text-success me-3"></i>
+                                            Vidéos pédagogiques détaillées
+                                        </li>
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <i class="fas fa-check-circle text-warning me-3"></i>
+                                            Quiz et évaluations personnalisés
+                                        </li>
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <i class="fas fa-chart-line text-danger me-3"></i>
+                                            Suivi personnalisé des progrès
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header bg-success text-white">
+                                    <h5><i class="fas fa-star me-2"></i>Avantages Uniques</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <i class="fas fa-chalkboard-teacher text-primary me-3"></i>
+                                            Professeurs hautement qualifiés
+                                        </li>
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <i class="fas fa-book-open text-success me-3"></i>
+                                            Contenu adapté au programme national
+                                        </li>
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <i class="fas fa-clock text-warning me-3"></i>
+                                            Apprentissage flexible à votre rythme
+                                        </li>
+                                        <li class="list-group-item d-flex align-items-center">
+                                            <i class="fas fa-headset text-danger me-3"></i>
+                                            Support technique 24/7
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal">
+                    <i class="fas fa-user-plus me-2"></i>Commencer maintenant
+                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal fade" id="registerModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Inscription</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm">
+                    <div class="mb-3">
+                        <label class="form-label">Nom complet</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Méthode d'inscription</label>
+                        <select class="form-select" id="registrationMethod" required>
+                            <option value="">Choisir...</option>
+                            <option value="email">Email</option>
+                            <option value="phone">Numéro de téléphone</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3" id="emailField">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="emailInput">
+                    </div>
+
+                    <div class="mb-3" id="phoneField" style="display: none;">
+                        <label class="form-label">Numéro de téléphone (+242)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">+242</span>
+                            <input type="tel" class="form-control" id="phoneInput" pattern="[0-9]{8,}" placeholder="Exemple: 064000000">
+                        </div>
+                        <div class="form-text">Format: 06XXXXXXX ou 05XXXXXXX</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Genre</label>
+                        <select class="form-select" id="gender" required>
+                            <option value="">Choisir...</option>
+                            <option value="M">Masculin</option>
+                            <option value="F">Féminin</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Âge</label>
+                        <input type="number" class="form-control" id="age" min="12" max="24" required>
+                        <div class="form-text">Entre 12 et 24 ans</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Mot de passe</label>
+                        <input type="password" class="form-control" id="password" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Confirmer le mot de passe</label>
+                        <input type="password" class="form-control" id="confirmPassword" required>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger flex-grow-1">Enregistrer</button>
+                        <button type="reset" class="btn btn-secondary">Effacer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Featured Courses Section -->
+<section class="container my-5">
+    <h2 class="text-center mb-4">Cours Populaires</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card course-card">
+                <span class="pricing-badge">2000 FCFA</span>
+                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Cours de mathématiques">
+                <div class="card-body">
+                    <h5 class="card-title">Mathématiques - Terminale</h5>
+                    <p class="card-text">Cours complet de mathématiques pour la Terminale série S.</p>
+                    <button class="btn btn-primary">Accéder au cours</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Pourquoi choisir Kelasi2.0 ?</h2>
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <i class="fas fa-chalkboard-teacher fa-3x mb-3 text-primary"></i>
+                <h4>Enseignants Qualifiés</h4>
+                <p>Des professeurs expérimentés pour vous guider.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <i class="fas fa-laptop-code fa-3x mb-3 text-primary"></i>
+                <h4>Cours Interactifs</h4>
+                <p>Apprentissage dynamique et engageant.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <i class="fas fa-clock fa-3x mb-3 text-primary"></i>
+                <h4>Accès 24/7</h4>
+                <p>Apprenez à votre rythme, où que vous soyez.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Authors & Partners Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Nos Auteurs & Partenaires</h2>
+        
+        <!-- Authors Row -->
+        <div class="mb-5">
+            <h3 class="text-center mb-4">Auteurs Experts</h3>
+            <div class="row row-cols-2 row-cols-md-4 g-4 justify-content-center">
+                <div class="col">
+                    <div class="card h-100 text-center border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="rounded-circle overflow-hidden mx-auto mb-3" style="width: 120px; height: 120px;">
+                                <img src="https://via.placeholder.com/120" alt="Prof. Makosso" class="img-fluid">
+                            </div>
+                            <h5 class="card-title">Prof. Makosso</h5>
+                            <p class="card-text text-muted">Mathématiques</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 text-center border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="rounded-circle overflow-hidden mx-auto mb-3" style="width: 120px; height: 120px;">
+                                <img src="https://via.placeholder.com/120" alt="Dr. N'Ganongo" class="img-fluid">
+                            </div>
+                            <h5 class="card-title">Dr. N'Ganongo</h5>
+                            <p class="card-text text-muted">Sciences Physiques</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 text-center border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="rounded-circle overflow-hidden mx-auto mb-3" style="width: 120px; height: 120px;">
+                                <img src="https://via.placeholder.com/120" alt="Prof. Moukala" class="img-fluid">
+                            </div>
+                            <h5 class="card-title">Prof. Moukala</h5>
+                            <p class="card-text text-muted">SVT</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Partners & Sponsors -->
+        <div class="text-center mb-5">
+            <h3 class="mb-4">Nos Partenaires</h3>
+            <div class="row align-items-center justify-content-center g-4">
+                <div class="col-6 col-md-3">
+                    <img src="https://via.placeholder.com/200x80" alt="Ministère de l'Education" class="img-fluid grayscale hover-color">
+                </div>
+                <div class="col-6 col-md-3">
+                    <img src="https://via.placeholder.com/200x80" alt="Université Marien Ngouabi" class="img-fluid grayscale hover-color">
+                </div>
+                <div class="col-6 col-md-3">
+                    <img src="https://via.placeholder.com/200x80" alt="MTN Congo" class="img-fluid grayscale hover-color">
+                </div>
+                <div class="col-6 col-md-3">
+                    <img src="https://via.placeholder.com/200x80" alt="Airtel Congo" class="img-fluid grayscale hover-color">
+                </div>
+            </div>
+        </div>
+
+        <!-- Academic Partners -->
+        <div class="text-center">
+            <h3 class="mb-4">Partenaires Académiques</h3>
+            <div class="row align-items-center justify-content-center g-4">
+                <div class="col-6 col-md-3">
+                    <img src="https://via.placeholder.com/200x80" alt="Lycée Savorgnan" class="img-fluid grayscale hover-color">
+                </div>
+                <div class="col-6 col-md-3">
+                    <img src="https://via.placeholder.com/200x80" alt="Lycée Chaminade" class="img-fluid grayscale hover-color">
+                </div>
+                <div class="col-6 col-md-3">
+                    <img src="https://via.placeholder.com/200x80" alt="Lycée Victor Augagneur" class="img-fluid grayscale hover-color">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Support Form Section -->
+<section class="support-form">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h5 class="text-center"><i class="fas fa-headset me-2"></i>Besoin d'aide ?</h5>
+                <form id="supportForm" class="needs-validation" novalidate>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="name" class="form-label">Nom complet</label>
+                            <input type="text" class="form-control" id="name" required>
+                            <div class="invalid-feedback">
+                                Veuillez entrer votre nom
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                            <div class="invalid-feedback">
+                                Veuillez entrer un email valide
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Sujet</label>
+                        <select class="form-select" id="subject" required>
+                            <option value="">Choisir un sujet...</option>
+                            <option value="technique">Problème technique</option>
+                            <option value="compte">Problème de compte</option>
+                            <option value="cours">Problème avec un cours</option>
+                            <option value="paiement">Problème de paiement</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Veuillez sélectionner un sujet
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Description du problème</label>
+                        <textarea class="form-control" id="message" rows="4" required></textarea>
+                        <div class="invalid-feedback">
+                            Veuillez décrire votre problème
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane me-2"></i>Envoyer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Apres BAC Modal -->
+<div class="modal fade" id="apresBacModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Orientation Universitaire au Congo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 class="text-primary mb-3">Universités du Congo Brazzaville</h4>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h5>Université Marien Ngouabi</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>Principale université publique de Brazzaville, fondée en 1971.</p>
+                                    <ul class="list-unstyled">
+                                        <li>• Facultés principales : Droit, Sciences, Lettres</li>
+                                        <li>• Localisation : Brazzaville</li>
+                                        <li>• Types de formations : Licence, Master, Doctorat</li>
+                                    </ul>
+                                    <ul class="list-group">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <a href="/videos/concours/licence" class="text-decoration-none">Préparation Concours Licence</a>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <a href="/videos/concours/master" class="text-decoration-none">Préparation Concours Master</a>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <a href="/videos/concours/doctorat" class="text-decoration-none">Préparation Concours Doctorat</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header bg-success text-white">
+                                    <h5>Université Denis Sassou Nguesso</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>Université moderne fondée pour répondre aux besoins de développement.</p>
+                                    <ul class="list-unstyled">
+                                        <li>• Formations : Technologies, Ingénierie</li>
+                                        <li>• Localisation : Brazzaville</li>
+                                        <li>• Programmes innovants</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-header bg-warning text-dark">
+                                    <h5>Documents de Préparation</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Guide d'orientation
+                                            <button onclick="initiatePayment('guide-orientation')" class="btn btn-sm btn-primary">250 FCFA</button>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Annales de concours
+                                            <button onclick="initiatePayment('annales-concours')" class="btn btn-sm btn-primary">500 FCFA</button>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Fiches de préparation
+                                            <button onclick="initiatePayment('fiches-preparation')" class="btn btn-sm btn-primary">300 FCFA</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-header bg-info">
+                                    <h5>Vidéos de Préparation</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Préparation Concours Licence
+                                            <button onclick="initiatePayment('video-marien-licence')" class="btn btn-sm btn-outline-primary">Gratuit</button>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Préparation Concours Master
+                                            <button onclick="initiatePayment('video-marien-master')" class="btn btn-sm btn-outline-primary">Gratuit</button>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Préparation Concours Doctorat
+                                            <button onclick="initiatePayment('video-marien-doctorat')" class="btn btn-sm btn-outline-primary">Gratuit</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-header bg-danger text-white">
+                                    <h5>Informations Concours</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Dates des concours</li>
+                                        <li class="list-group-item">Conditions d'admission</li>
+                                        <li class="list-group-item">Préparation des dossiers</li>
+                                    </ul>
+                                    <button class="btn btn-outline-danger w-100 mt-3" data-bs-toggle="modal" data-bs-target="#concoursDetailsModal">
+                                        Détails complets
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                <a href="/contact" class="btn btn-primary">Contact Orientation</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Modal for Concours Details -->
+<div class="modal fade" id="concoursDetailsModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Détails complets des Concours universitaires 2024 - Gratuité des Informations</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 mb-4">
+                            <div class="alert alert-info">
+                                <h5 class="alert-heading">🎓 Informations de Concours - Accès Gratuit</h5>
+                                <p>Toutes les informations suivantes sont fournies gratuitement pour vous aider dans votre préparation aux concours universitaires.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Université Marien Ngouabi Section -->
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header bg-primary text-white">
+                                    <h4>Université Marien Ngouabi</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5>Présentation de l'Université</h5>
+                                            <p>L'Université Marien Ngouabi, principale université publique du Congo, fondée en 1971, offre une formation académique complète dans divers domaines.</p>
+                                            
+                                            <h6>Écoles et Instituts</h6>
+                                            <ul class="list-group">
+                                                <li class="list-group-item">Faculté des Lettres et Sciences Humaines</li>
+                                                <li class="list-group-item">Faculté des Sciences</li>
+                                                <li class="list-group-item">Institut de Droit</li>
+                                                <li class="list-group-item">École Nationale Supérieure d'Agronomie</li>
+                                                <li class="list-group-item">Institut de Médecine</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5>Dates des Concours 2024</h5>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Type de Concours</th>
+                                                        <th>Période</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Licence</td>
+                                                        <td>15-20 Mars 2024</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Master</td>
+                                                        <td>22-27 Mars 2024</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Doctorat</td>
+                                                        <td>29 Mars - 3 Avril 2024</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <h5>Documents de Préparation</h5>
+                                            <ul class="list-group">
+                                                <li class="list-group-item">Guide de préinscription</li>
+                                                <li class="list-group-item">Liste des pièces à fournir</li>
+                                                <li class="list-group-item">Calendrier détaillé</li>
+                                                <li class="list-group-item">Formulaire de candidature</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Université Denis Sassou Nguesso Section -->
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header bg-success text-white">
+                                    <h4>Université Denis Sassou Nguesso</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5>Présentation de l'Université</h5>
+                                            <p>Université moderne fondée pour répondre aux défis du développement technologique et scientifique du Congo.</p>
+                                            
+                                            <h6>Écoles et Instituts</h6>
+                                            <ul class="list-group">
+                                                <li class="list-group-item">École Supérieure d'Ingénierie</li>
+                                                <li class="list-group-item">Institut des Technologies Numériques</li>
+                                                <li class="list-group-item">École de Développement et Management</li>
+                                                <li class="list-group-item">Centre de Recherche Technologique</li>
+                                                <li class="list-group-item">Institut de Formation Professionnelle</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5>Dates des Concours 2024</h5>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Type de Concours</th>
+                                                        <th>Période</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Ingénierie</td>
+                                                        <td>01-10 Avril 2024</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Technologies</td>
+                                                        <td>11-20 Avril 2024</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Développement</td>
+                                                        <td>21-30 Avril 2024</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <h5>Documents de Préparation</h5>
+                                            <ul class="list-group">
+                                                <li class="list-group-item">Guide technique de candidature</li>
+                                                <li class="list-group-item">Référentiel des compétences</li>
+                                                <li class="list-group-item">Programme détaillé</li>
+                                                <li class="list-group-item">Formulaire spécialisé</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Common Documents and Preparation -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h5 class="card-title">Documents Communs Obligatoires</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item">Copie certifiée du diplôme</li>
+                                                <li class="list-group-item">Extrait d'acte de naissance</li>
+                                                <li class="list-group-item">2 photos d'identité récentes</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item">Relevés de notes</li>
+                                                <li class="list-group-item">Curriculum vitae</li>
+                                                <li class="list-group-item">Lettre de motivation</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Paiement du Document</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h6 class="mb-3">Prix: 250 FCFA</h6>
+                <form id="paymentForm">
+                    <div class="mb-3">
+                        <label class="form-label">Mode de paiement</label>
+                        <select class="form-select" id="paymentMethod" required>
+                            <option value="">Choisir...</option>
+                            <option value="mobile-money">Mobile Money</option>
+                            <option value="airtel-money">Airtel Money</option>
+                        </select>
+                    </div>
+                    <div id="paymentDetails" class="mb-3 d-none">
+                        <div class="alert alert-info">
+                            <h6 class="alert-heading">Instructions de paiement</h6>
+                            <div id="mobileMoneyDetails" class="d-none">
+                                <p>Veuillez effectuer le paiement au numéro suivant :</p>
+                                <p class="fw-bold phone-number" onclick="copyPhoneNumber(this)">06 781 47 04 
+                                    <i class="fas fa-copy ms-2"></i>
+                                    <span class="copy-tooltip">Cliquer pour copier</span>
+                                </p>
+                            </div>
+                            <div id="airtelMoneyDetails" class="d-none">
+                                <p>Veuillez effectuer le paiement au numéro suivant :</p>
+                                <p class="fw-bold phone-number" onclick="copyPhoneNumber(this)">05 525 06 25
+                                    <i class="fas fa-copy ms-2"></i>
+                                    <span class="copy-tooltip">Cliquer pour copier</span>
+                                </p>
+                            </div>
+                            <p class="mb-0">Une fois le paiement effectué, veuillez remplir votre numéro ci-dessous pour la vérification.</p>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Votre numéro de téléphone</label>
+                        <input type="tel" class="form-control" required pattern="[0-9]{8,}" placeholder="Exemple: 064000000">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Confirmer le paiement</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Document Download Modal -->
+<div class="modal fade" id="documentDownloadModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Document Acheté</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h4 id="documentTitle">Document</h4>
+                <p>Votre document a été vérifié et est prêt à être téléchargé.</p>
+                <div class="d-grid">
+                    <button onclick="downloadDocument(localStorage.getItem('selectedDocument'))" class="btn btn-primary">
+                        Télécharger le document
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Acces Rapide Modal -->
+<div class="modal fade" id="accesFastModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><i class="fas fa-bolt me-2"></i>Accès Rapide</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- Cours Récents -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-book-open me-2"></i>Cours Récents</h5>
+                                <span class="badge bg-light text-primary">4 Nouveautés</span>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>Mathématiques 3ème</span>
+                                        <span class="badge bg-success">Nouveau</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>Physique Terminale D</span>
+                                        <span class="badge bg-info">Mis à jour</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>Français Seconde</span>
+                                        <span class="badge bg-warning">En cours</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>SVT Première C</span>
+                                        <span class="badge bg-danger">Recommandé</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Vidéos Populaires -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-video me-2"></i>Vidéos Populaires</h5>
+                                <span class="badge bg-light text-success">3 Tendances</span>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>Chimie organique - Term D</span>
+                                        <span class="badge bg-primary">Vue</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>Géométrie dans l'espace - 3ème</span>
+                                        <span class="badge bg-warning">Populaire</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>Dissertation littéraire - Term A</span>
+                                        <span class="badge bg-success">Recommandé</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Prochains Quiz -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-header bg-warning text-dark">
+                                <h5 class="mb-0"><i class="fas fa-clock me-2"></i>Prochains Quiz</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        SVT - 3ème
+                                        <small class="text-muted">Dans 2 jours</small>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Histoire-Géo - Term A
+                                        <small class="text-muted">Dans 5 jours</small>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Mathématiques - Term C
+                                        <small class="text-muted">Dans 7 jours</small>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Dernières Notifications -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0"><i class="fas fa-bell me-2"></i>Dernières Notifications</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item text-danger d-flex justify-content-between align-items-center">
+                                        Maintenance prévue
+                                        <small class="text-muted">Il y a 2h</small>
+                                    </li>
+                                    <li class="list-group-item text-success d-flex justify-content-between align-items-center">
+                                        Nouveaux cours disponibles
+                                        <small class="text-muted">Hier</small>
+                                    </li>
+                                    <li class="list-group-item text-primary d-flex justify-content-between align-items-center">
+                                        Mise à jour de la plateforme
+                                        <small class="text-muted">Il y a 3 jours</small>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Progression -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-header bg-danger text-white">
+                                <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Progression</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress mb-2">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">Mathématiques</div>
+                                </div>
+                                <div class="progress mb-2">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">Physique</div>
+                                </div>
+                                <div class="progress mb-2">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">SVT</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-primary">Tout voir</button>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="bg-dark text-light py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <h5>À propos de Kelasi2.0</h5>
+                <p>Plateforme éducative innovante pour les élèves du secondaire.</p>
+            </div>
+            <div class="col-md-3">
+                <h5>Liens Rapides</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/contact" class="text-light">Contact</a></li>
+                    <li><a href="/faq" class="text-light">FAQ</a></li>
+                    <li><a href="/mentions-legales" class="text-light">Mentions légales</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h5>Suivez-nous</h5>
+                <div class="social-links">
+                    <a href="https://facebook.com" class="text-light me-3"><i class="fab fa-facebook"></i></a>
+                    <a href="https://twitter.com" class="text-light me-3"><i class="fab fa-twitter"></i></a>
+                    <a href="https://instagram.com" class="text-light me-3"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h5>Développé par</h5>
+                <p><a href="https://jasoninformatique.mydurable.com/" target="_blank" class="text-light">
+                    <i class="fas fa-laptop-code me-2"></i>Jason Informatique
+                </a></p>
+                <small class="text-muted">Solutions informatiques professionnelles</small>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <a href="#" class="text-muted small" data-bs-toggle="modal" data-bs-target="#adminLoginModal">
+                <i class="fas fa-user-shield me-2"></i>Espace Administrateur
+            </a>
+        </div>
+    </div>
+</footer>
+
+<!-- Admin Login Modal -->
+<div class="modal fade" id="adminLoginModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Connexion Administrateur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="adminLoginForm">
+                    <div class="mb-3">
+                        <label class="form-label">Nom d'utilisateur Admin</label>
+                        <input type="text" class="form-control" id="adminUsername" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mot de passe Admin</label>
+                        <input type="password" class="form-control" id="adminPassword" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-danger">Se connecter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Admin Dashboard Modal -->
+<div class="modal fade" id="adminDashboardModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tableau de Bord Administrateur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <i class="fas fa-users me-2"></i>Utilisateurs
+                            </div>
+                            <div class="card-body">
+                                <h2 id="totalUsersCount">0</h2>
+                                <p>Total des Utilisateurs Inscrits</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                                <i class="fas fa-graduation-cap me-2"></i>Abonnements
+                            </div>
+                            <div class="card-body">
+                                <h2 id="subscribedUsersCount">0</h2>
+                                <p>Utilisateurs Abonnés</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-header bg-warning text-white">
+                                <i class="fas fa-chart-line me-2"></i>Statistiques Générales
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li>Cours Actifs: <strong id="activeCourseCount">0</strong></li>
+                                    <li>Vidéos Publiées: <strong id="videoCount">0</strong></li>
+                                    <li>Quiz Disponibles: <strong id="quizCount">0</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+let isChatOpen = false;
+
+function toggleChat() {
+    const chatWidget = document.getElementById('aiChatWidget');
+    const chatButton = document.getElementById('chatToggleBtn');
+    
+    if (chatWidget.style.display === 'none' || chatWidget.style.display === '') {
+        chatWidget.style.display = 'flex';
+        chatButton.innerHTML = '<i class="fas fa-times"></i>';
+    } else {
+        chatWidget.style.display = 'none';
+        chatButton.innerHTML = '<i class="fas fa-comments"></i>';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Automatically show presentation modal on first visit
+    const hasSeenPresentation = localStorage.getItem('hasSeenPresentation');
+    if (!hasSeenPresentation) {
+        const presentationModal = new bootstrap.Modal(document.getElementById('presentationModal'));
+        presentationModal.show();
+        localStorage.setItem('hasSeenPresentation', 'true');
+    }
+
+    // Add click event to presentation navbar link
+    const presentationLink = document.querySelector('a[href="/presentation"]');
+    if (presentationLink) {
+        presentationLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            const presentationModal = new bootstrap.Modal(document.getElementById('presentationModal'));
+            presentationModal.show();
+        });
+    }
+});
+
+function animatePresentationModal() {
+    const modalCards = document.querySelectorAll('#presentationModal .card');
+    modalCards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'all 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 200);
+    });
+}
+
+// Trigger animations when modal is shown
+document.getElementById('presentationModal').addEventListener('shown.bs.modal', animatePresentationModal);
+
+document.addEventListener('DOMContentLoaded', function() {
+    const chatToggleBtn = document.getElementById('chatToggleBtn');
+    if (chatToggleBtn) {
+        chatToggleBtn.onclick = toggleChat;
+    }
+});
+
+function sendMessage() {
+    const userInput = document.getElementById('userInput');
+    const chatMessages = document.getElementById('chatMessages');
+    
+    if (userInput.value.trim() === '') return;
+    
+    // Add user message
+    const userMessage = document.createElement('div');
+    userMessage.className = 'message user';
+    userMessage.textContent = userInput.value;
+    chatMessages.appendChild(userMessage);
+    
+    // Add bot response (simulated)
+    const botMessage = document.createElement('div');
+    botMessage.className = 'message bot';
+    botMessage.textContent = "Je suis désolé, je suis temporairement en maintenance. Je serai bientôt de retour pour vous aider!";
+    
+    // Simulate typing delay
+    setTimeout(() => {
+        chatMessages.appendChild(botMessage);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }, 1000);
+    
+    userInput.value = '';
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Add event listener for Enter key in chat input
+document.getElementById('userInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        sendMessage();
+    }
+});
+
+document.getElementById('registrationMethod').addEventListener('change', function() {
+    const emailField = document.getElementById('emailField');
+    const phoneField = document.getElementById('phoneField');
+    
+    if (this.value === 'email') {
+        emailField.style.display = 'block';
+        phoneField.style.display = 'none';
+        document.getElementById('phoneInput').required = false;
+        document.getElementById('emailInput').required = true;
+    } else {
+        emailField.style.display = 'none'; 
+        phoneField.style.display = 'block';
+        document.getElementById('phoneInput').required = true;
+        document.getElementById('emailInput').required = false;
+    }
+});
+
+// Add click event listener to "Après mon BAC" navbar link
+document.querySelector('a[href="/apres-bac"]').addEventListener('click', function(e) {
+    e.preventDefault();
+    const apresBacModal = new bootstrap.Modal(document.getElementById('apresBacModal'));
+    apresBacModal.show();
+});
+
+// Payment initiation function
+function initiatePayment(documentType) {
+    // Store the selected document for later use
+    localStorage.setItem('selectedDocument', documentType);
+    
+    // Show the payment modal
+    const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+    paymentModal.show();
+
+    // Dynamic pricing and details based on document type
+    const documentPrices = {
+        'guide-orientation': 250,
+        'annales-concours': 500,
+        'fiches-preparation': 300
+    };
+
+    document.querySelector('#paymentModal .modal-body h6').textContent = `Prix: ${documentPrices[documentType]} FCFA`;
+}
+
+// Copy phone number function
+function copyPhoneNumber(element) {
+    const phoneNumber = element.textContent.trim();
+    navigator.clipboard.writeText(phoneNumber).then(() => {
+        element.querySelector('.copy-tooltip').textContent = 'Copié!';
+        setTimeout(() => {
+            element.querySelector('.copy-tooltip').textContent = 'Cliquer pour copier';
+        }, 2000);
+    });
+}
+
+// Document download function
+function downloadDocument(documentType) {
+    // In a real application, this would involve server-side verification and file serving
+    const documentLinks = {
+        'guide-orientation': '/documents/guide-orientation.pdf',
+        'annales-concours': '/documents/annales-concours.pdf',
+        'fiches-preparation': '/documents/fiches-preparation.pdf'
+    };
+
+    const link = document.createElement('a');
+    link.href = documentLinks[documentType];
+    link.download = `${documentType}.pdf`;
+    link.click();
+}
+
+// Payment method selection logic
+document.getElementById('paymentMethod').addEventListener('change', function() {
+    const paymentDetails = document.getElementById('paymentDetails');
+    const mobileMoneyDetails = document.getElementById('mobileMoneyDetails');
+    const airtelMoneyDetails = document.getElementById('airtelMoneyDetails');
+
+    paymentDetails.classList.remove('d-none');
+    mobileMoneyDetails.classList.add('d-none');
+    airtelMoneyDetails.classList.add('d-none');
+
+    if (this.value === 'mobile-money') {
+        mobileMoneyDetails.classList.remove('d-none');
+    } else if (this.value === 'airtel-money') {
+        airtelMoneyDetails.classList.remove('d-none');
+    }
+});
+
+// Add this inside the existing <script> tag to handle payment form submission
+document.getElementById('paymentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Get form elements
+    const paymentMethod = document.getElementById('paymentMethod').value;
+    const phoneNumber = this.querySelector('input[type="tel"]').value;
+
+    // Basic validation
+    if (!paymentMethod) {
+        alert('Veuillez sélectionner un mode de paiement');
+        return;
+    }
+
+    if (!phoneNumber || phoneNumber.length < 8) {
+        alert('Veuillez entrer un numéro de téléphone valide');
+        return;
+    }
+
+    // Simulated payment verification (replace with actual backend verification)
+    const paymentVerification = {
+        'mobile-money': () => Math.random() > 0.2,
+        'airtel-money': () => Math.random() > 0.1
+    };
+
+    if (paymentVerification[paymentMethod]()) {
+        // Payment successful
+        const documentTitle = document.getElementById('documentTitle');
+        const selectedDocument = localStorage.getItem('selectedDocument');
+        
+        // Map document types to readable names
+        const documentNames = {
+            'guide-orientation': 'Guide d\'Orientation',
+            'annales-concours': 'Annales de Concours',
+            'fiches-preparation': 'Fiches de Préparation'
+        };
+
+        documentTitle.textContent = documentNames[selectedDocument] || 'Document';
+
+        // Close payment modal
+        const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+        paymentModal.hide();
+
+        // Show download modal
+        const downloadModal = new bootstrap.Modal(document.getElementById('documentDownloadModal'));
+        downloadModal.show();
+
+    } else {
+        // Payment failed
+        alert('Échec du paiement. Veuillez réessayer.');
+    }
+});
+</script>
+</body>
+</html>
